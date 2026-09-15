@@ -8,23 +8,22 @@ export default function IssuesPage(){
     const [errorMessage,setErrorMessage] = useState("")
 
     useEffect(()=>{
-        try{
-            setIsLoaading(true)
-            setIsError(false)
-
-            const loadIssues=async()=>{
-                const requestApiData = await fetchIssues()
-                if(requestApiData){
-                    setIssues(requestApiData)
+        setIsLoaading(true)
+        setIsError(false)
+        const loadIssues =async () =>{
+            try{
+                const result = await fetchIssues()
+                if(result){
+                    setIssues(result)
                     setIsLoaading(false)
                 }
+            }catch(error:any){
+                setIsError(true)
+                setIsLoaading(false)
+                setErrorMessage(error.message)
             }
-
-            loadIssues();
-        }catch(e:any){
-            setIsLoaading(false)
-            setIsError(true)
-            setErrorMessage(e.message)
         }
+
+        loadIssues()
     },[])
 }
