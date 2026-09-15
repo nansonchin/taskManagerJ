@@ -13,7 +13,8 @@ export default function IssuesPage() {
     const loadIssues = async () => {
       try {
         const result = await fetchIssues();
-        setIssues(result);
+        console.log(result.todos);
+        setIssues(result.todos);
         setIsLoading(false);
       } catch (error: any) {
         setIsError(true);
@@ -25,33 +26,20 @@ export default function IssuesPage() {
     loadIssues();
   }, []);
 
-  if(isLoading){
-    return(
-        <div>
-            Loading ...
-        </div>
-    )
+  if (isLoading) {
+    return <div>Loading ...</div>;
   }
 
-  if(isError){
-    return(
-        <div>
-            Something went wrong
-        </div>
-    )
+  if (isError) {
+    return <div>Something went wrong</div>;
   }
 
-  return(
+  return (
     <div>
-        {
-            issues.forEach((issue)=>{
-                return (
-                    <div>
-                        {issue}
-                        </div>
-                )
-            })
-        }
+      {issues.map((issue) => {
+        console.log("issue", issue);
+        return <div>{issue.todo}</div>;
+      })}
     </div>
-  )
+  );
 }
