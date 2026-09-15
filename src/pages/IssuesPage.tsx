@@ -7,11 +7,21 @@ export default function IssuesPage(){
     const [error,setIsError] = useState(false)
     const [errorMessage,setErrorMessage] = useState("")
 
-    useEffect(async()=>{
+    useEffect(()=>{
         try{
-            const requestApiData = await fetchIssues()
-            setIssues(requestApiData)
-        }catch(e){
+            setIsLoaading(true)
+            setIsError(false)
+
+            const loadIssues=async()=>{
+                const requestApiData = await fetchIssues()
+                if(requestApiData){
+                    setIssues(requestApiData)
+                    setIsLoaading(false)
+                }
+            }
+
+            loadIssues();
+        }catch(e:any){
             setIsError(true)
             setErrorMessage(e.message)
         }
