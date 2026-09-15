@@ -42,8 +42,11 @@ export default function IssuesPage() {
             status:nextStatus
           }
         }
+          return data
       })
     )
+
+  
   }
 
   if (isLoading) {
