@@ -22,6 +22,7 @@ export default function IssuesPage(){
 
             loadIssues();
         }catch(e:any){
+            setIsLoaading(false)
             setIsError(true)
             setErrorMessage(e.message)
         }
