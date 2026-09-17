@@ -18,7 +18,7 @@ export function IssueForm(){
                 onChange={(e)=>{
                     setFormData({
                         ...formData,
-                        title:formData.title
+                        title:e.target.value
                     })
                 }}
             />
