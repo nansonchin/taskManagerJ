@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import fetchIssues from "../api/fetchIssues";
 import getNextStatus from "../utils/getNextStatus";
+import type { ApiTodo, Issue } from "../type/issue";
 
 
 export default function IssuesPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [issues, setIssues] = useState([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const issues = 
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,7 +19,7 @@ export default function IssuesPage() {
       try {
         const result = await fetchIssues();
         console.log(result.todos);
-        setIssues(result.todos);
+        setIssues(result.todos.map((apiIssue:ApiTodo)=> transformIssue(apiIssue)));
         setIsLoading(false);
       } catch (error: any) {
         setIsError(true);
@@ -66,3 +68,7 @@ export default function IssuesPage() {
     </div>
   );
 }
+function transformIssue(apiIssue: any) {
+  throw new Error("Function not implemented.");
+}
+
