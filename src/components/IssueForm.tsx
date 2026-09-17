@@ -1,16 +1,14 @@
 import { useState } from "react";
 import type { IssueFormData } from "../type/issue";
 
-export type IssueFormProps={
-   title:string,
-    description:string,
-    assignee:string;
-    difficulty:number;
-    dueDate:Date | null;
-}
-
 export function IssueForm(){
-    const [formData,setFormData] = useState<IssueFormData>()
+    const [formData,setFormData] = useState<IssueFormData>({
+        title:"",
+        description:"",
+        assignee:"",
+        difficulty:3,
+        dueDate:null
+    })
     return (
         <form>
             <input
