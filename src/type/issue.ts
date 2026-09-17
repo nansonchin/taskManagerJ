@@ -20,3 +20,11 @@ export type ApiTodo={
     completed:boolean,
     userId:number
 }
+
+export type IssueFormData={
+    title:string,
+    description:string,
+    assignee:string;
+    difficulty:number;
+    dueDate:Date | null;
+}
