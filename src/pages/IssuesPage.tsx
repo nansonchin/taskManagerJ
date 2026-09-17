@@ -6,15 +6,13 @@ import { transformIssue } from "../utils/transformIssue";
 import IssueList from "../components/IssueList";
 import { IssueForm } from "../components/IssueForm";
 
-
 export default function IssuesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [issues, setIssues] = useState<Issue[]>([]);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isCreateForm,setIsCreateForm] = useState(false)
-  const [edittingIssueId,setEdittingId] = useState<number |null>(null)
-
+  const [isCreateForm, setIsCreateForm] = useState(false);
+  const [edittingIssueId, setEdittingId] = useState<number | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +21,9 @@ export default function IssuesPage() {
       try {
         const result = await fetchIssues();
         console.log(result.todos);
-        setIssues(result.todos.map((apiIssue:ApiTodo)=> transformIssue(apiIssue)));
+        setIssues(
+          result.todos.map((apiIssue: ApiTodo) => transformIssue(apiIssue)),
+        );
         setIsLoading(false);
       } catch (error: any) {
         setIsError(true);
@@ -35,47 +35,60 @@ export default function IssuesPage() {
     loadIssues();
   }, []);
 
-  const handleCreateIssue=(formData:IssueFormData)=>{
-    const newIssue:Issue = {
-      id:Date.now(),
-      ...formData,
-      status:"To-do"
+  const handleFormSubmit = (formData: IssueFormData, issueId?: number) => {
+    if (issueId) {
+      setIssues(
+        issues.map((issue)=>{
+          if(issue.id===issueId){
+            return{
+              ...issue,
+              ...formData
+            }
+          }
+          return issue;
+        })
+      )
+    } else {
+      const newIssue: Issue = {
+        id: Date.now(),
+        ...formData,
+        status: "To-do",
+      };
+      setIssues([...issues, newIssue]);
+      setIsCreateForm(false);
     }
-    setIssues([...issues,newIssue])
-    setIsCreateForm(false)
-  }
+  };
 
-  const handleEditIssue = (issueId:number)=>{
-    setEdittingId(issueId)
-    console.log("Id",issueId)
+  const handleEditIssue = (issueId: number) => {
+    setEdittingId(issueId);
+    console.log("Id", issueId);
 
-    if(!issueId){
-      return
+    if (!issueId) {
+      return;
+    }
+  };
+
+  const handleStatusChange = (issueId: number) => {
+    const issue = issues.find((data) => data.id === issueId);
+
+    if (!issue) {
+      return;
     }
 
-  }
-  
-  const handleStatusChange = (issueId:number) =>{
-    const issue = issues.find((data)=>data.id === issueId)
-
-    if(!issue){
-      return
-    }
-
-    const nextStatus = getNextStatus(issue.status)
+    const nextStatus = getNextStatus(issue.status);
 
     setIssues(
-      issues.map((data)=>{
-        if(data.id === issueId){
-          return{
+      issues.map((data) => {
+        if (data.id === issueId) {
+          return {
             ...data,
-            status:nextStatus
-          }
+            status: nextStatus,
+          };
         }
-          return data
-      })
-    )
-  }
+        return data;
+      }),
+    );
+  };
 
   if (isLoading) {
     return <div>Loading ...</div>;
@@ -85,25 +98,31 @@ export default function IssuesPage() {
     return <div>Something went wrong</div>;
   }
 
-    const issueToEdit = edittingIssueId? issues.find((issue)=>issue.id === edittingIssueId):undefined
+  const issueToEdit = edittingIssueId
+    ? issues.find((issue) => issue.id === edittingIssueId)
+    : undefined;
   return (
     <div>
       <div>
-        <button onClick={()=>setIsCreateForm((prev)=>!prev)}>
+        <button onClick={() => setIsCreateForm((prev) => !prev)}>
           Create Form
         </button>
-        {
-          isCreateForm || edittingIssueId &&
-         <div>
-           <button onClick={()=>setIsCreateForm(false)}>
-            Cancel
-          </button>
-          <IssueForm onCreate={handleCreateIssue} issueToEdit={issueToEdit}/>
-          </div>
-        }
+        {isCreateForm ||
+          edittingIssueId && (
+            <div>
+              <button onClick={() => setIsCreateForm(false)}>Cancel</button>
+              <IssueForm
+                onSubmit={handleFormSubmit}
+                issueToEdit={issueToEdit}
+              />
+            </div>
+          )}
       </div>
-      <IssueList issues={issues} onIssueCardClick={handleStatusChange} onIssueCardEdit={handleEditIssue}/>
+      <IssueList
+        issues={issues}
+        onIssueCardClick={handleStatusChange}
+        onIssueCardEdit={handleEditIssue}
+      />
     </div>
   );
 }
-

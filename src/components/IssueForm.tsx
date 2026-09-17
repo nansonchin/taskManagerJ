@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import type { Issue, IssueFormData } from "../type/issue";
 
 type IssueFormProps = {
-  onCreate: (formData: IssueFormData) => void;
+  onSubmit: (formData: IssueFormData, issueId?: number) => void;
   issueToEdit?: Issue;
 };
 
-export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
+export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onCreate(formData);
-    setFormData(initialData);
+    onSubmit(formData, issueToEdit?.id);
+    if (!issueToEdit) {
+      setFormData(initialData);
+    }
   };
 
   const [formData, setFormData] = useState<IssueFormData>({
@@ -110,11 +112,10 @@ export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
           }}
         />
       </div>
-      {issueToEdit ? (
-        <button>Edit</button>
-      ) : (
-        <button type="submit">Submit</button>
-      )}
+        <button type="submit">{
+            issueToEdit? "Save":"Submit"
+            }</button>
+     
     </form>
   );
 }
