@@ -12,7 +12,7 @@ export default function IssueList({issues,onIssueCardClick}:IssueListProps){
             {
                 issues.map((issue)=>{
                     return(
-                        <IssueCard issue={issue} onIssueCardClick={()=>onIssueCardClick(issue.id)}/>
+                        <IssueCard key={issue.id} issue={issue} onIssueCardClick={onIssueCardClick}/>
                     )
                 })
             }

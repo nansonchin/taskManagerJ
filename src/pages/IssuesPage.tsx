@@ -67,7 +67,7 @@ export default function IssuesPage() {
 
   return (
     <div>
-      <IssueList issues={issues} onIssueCardClick={()=>handleStatusChange(issueId)}/>
+      <IssueList issues={issues} onIssueCardClick={handleStatusChange}/>
     </div>
   );
 }

@@ -7,8 +7,17 @@ export type IssueCardProps={
 
 export function IssueCard({issue,  onIssueCardClick}:IssueCardProps){
     return(
-        <div onClick={()=>onIssueCardClick(issue.id)}>
-            {issue.title}
+        <div >
+            <div>{issue.title}</div>
+            <div>{issue.description}</div>
+            <div>{issue.status}</div>
+            <button onClick={()=>onIssueCardClick(issue.id)
+                
+            }>
+
+                Change Status
+            </button>
+
         </div>
     )
 }
