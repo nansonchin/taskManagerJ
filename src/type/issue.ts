@@ -8,7 +8,7 @@ export type Issue = {
     id:number;
     title:string;
     description:string;
-    asisignee:string;
+    assignee:string;
     status:Status;
     dueDate:Date |null;
     difficulty:number;

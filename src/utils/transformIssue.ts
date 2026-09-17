@@ -5,7 +5,7 @@ export function transformIssue(apiIssue:ApiTodo):Issue{
         id:apiIssue.id,
         title:apiIssue.todo,
         description:"",
-        asisignee:String(apiIssue.userId),
+        assignee:String(apiIssue.userId),
         status:apiIssue.completed? "Done":"To-do",
         dueDate:null,
         difficulty: 3

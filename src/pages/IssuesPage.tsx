@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchIssues from "../api/fetchIssues";
 import getNextStatus from "../utils/getNextStatus";
-import type { ApiTodo, Issue } from "../type/issue";
+import type { ApiTodo, Issue, IssueFormData } from "../type/issue";
 import { transformIssue } from "../utils/transformIssue";
 import IssueList from "../components/IssueList";
+import { IssueForm } from "../components/IssueForm";
 
 
 export default function IssuesPage() {
@@ -11,6 +12,7 @@ export default function IssuesPage() {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCreateForm,setIsCreateForm] = useState(false)
 
 
   useEffect(() => {
@@ -31,6 +33,15 @@ export default function IssuesPage() {
 
     loadIssues();
   }, []);
+
+  const handleCreateIssue=(formData:IssueFormData)=>{
+    const newIssue:Issue = {
+      id:Date.now(),
+      ...formData,
+      status:"To-do"
+    }
+    setIssues([...issues,newIssue])
+  }
 
   
   const handleStatusChange = (issueId:number) =>{
@@ -67,6 +78,20 @@ export default function IssuesPage() {
 
   return (
     <div>
+      <div>
+        <button onClick={()=>setIsCreateForm(true)}>
+          Create Form
+        </button>
+        {
+          isCreateForm??
+         <div>
+           <button onClick={()=>setIsCreateForm(false)}>
+            Cancel
+          </button>
+          <IssueForm onCreate={handleCreateIssue} />
+          </div>
+        }
+      </div>
       <IssueList issues={issues} onIssueCardClick={handleStatusChange}/>
     </div>
   );

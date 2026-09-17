@@ -7,7 +7,7 @@ type IssueFormProps = {
 
 export function IssueForm({onCreate}:IssueFormProps) {
 
-    const handleSubmit = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    const handleSubmit = (e:React.FormEvent)=>{
         e.preventDefault()
         onCreate(formData)
     }
@@ -20,7 +20,7 @@ export function IssueForm({onCreate}:IssueFormProps) {
     dueDate: null,
   });
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
         value={formData.title}
         onChange={(e) => {
@@ -68,6 +68,9 @@ export function IssueForm({onCreate}:IssueFormProps) {
           });
         }}
       />
+      <button type="submit">
+        Submit
+      </button>
     </form>
   );
 }
