@@ -93,6 +93,10 @@ export default function IssuesPage() {
     );
   };
 
+  const handleDeleteIssue=(issueId:number)=>{
+    setIssues((prev)=> prev.filter(((item)=>item.id!==issueId)))
+  }
+
   const closeForm =() =>{
     setEdittingId(null)
       setIsCreateForm(false);
@@ -130,6 +134,7 @@ export default function IssuesPage() {
         issues={issues}
         onIssueCardClick={handleStatusChange}
         onIssueCardEdit={handleEditIssue}
+        onIssueCardDelete={handleDeleteIssue}
       />
     </div>
   );

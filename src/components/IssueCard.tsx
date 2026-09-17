@@ -4,9 +4,10 @@ export type IssueCardProps={
     issue:Issue
       onIssueCardClick :(issueId:number)=>void;
       onIssueCardEdit:(issueId:number) =>void;
+      onIssueCardDelete:(issueId:number)=>void;
 }
 
-export function IssueCard({issue,  onIssueCardClick,onIssueCardEdit}:IssueCardProps){
+export function IssueCard({issue,  onIssueCardClick,onIssueCardEdit,onIssueCardDelete}:IssueCardProps){
     return(
         <div >
             <div>{issue.title}</div>
@@ -20,6 +21,9 @@ export function IssueCard({issue,  onIssueCardClick,onIssueCardEdit}:IssueCardPr
             </button>
             <button onClick={()=>onIssueCardEdit(issue.id)}>
                 Edit
+            </button>
+            <button onClick ={()=>onIssueCardDelete(issue.id)}>
+                Delete
             </button>
         </div>
     )
