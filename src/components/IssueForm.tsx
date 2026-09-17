@@ -1,7 +1,17 @@
 import { useState } from "react";
 import type { IssueFormData } from "../type/issue";
 
-export function IssueForm() {
+type IssueFormProps = {
+    onCreate:(formData:IssueFormData) => void;
+}
+
+export function IssueForm({onCreate}:IssueFormProps) {
+
+    const handleSubmit = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        e.preventDefault()
+        onCreate(formData)
+    }
+
   const [formData, setFormData] = useState<IssueFormData>({
     title: "",
     description: "",
@@ -50,11 +60,11 @@ export function IssueForm() {
         }}
       />
        <input
-        value={formData.dueDate}
+        value={String(formData.dueDate)}
         onChange={(e) => {
           setFormData({
             ...formData,
-            dueDate: new Date(e.target.value),
+            dueDate: new Date(e.target.value ?? ""),
           });
         }}
       />
