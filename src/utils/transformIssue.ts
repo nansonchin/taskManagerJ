@@ -1,6 +1,6 @@
 import type { ApiTodo, Issue } from "../type/issue";
 
-function transformIssue(apiIssue:ApiTodo):Issue{
+export function transformIssue(apiIssue:ApiTodo):Issue{
     return{
         id:apiIssue.id,
         title:apiIssue.todo,

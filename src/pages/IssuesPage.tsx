@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import fetchIssues from "../api/fetchIssues";
 import getNextStatus from "../utils/getNextStatus";
 import type { ApiTodo, Issue } from "../type/issue";
+import { transformIssue } from "../utils/transformIssue";
+import IssueList from "../components/IssueList";
 
 
 export default function IssuesPage() {
@@ -10,7 +12,6 @@ export default function IssuesPage() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const issues = 
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,8 +33,13 @@ export default function IssuesPage() {
   }, []);
 
   
-  const handleStatusChange = (issueId) =>{
+  const handleStatusChange = (issueId:number) =>{
     const issue = issues.find((data)=>data.id === issueId)
+
+    if(!issue){
+      return
+    }
+
     const nextStatus = getNextStatus(issue.status)
 
     setIssues(
@@ -61,14 +67,8 @@ export default function IssuesPage() {
 
   return (
     <div>
-      {issues.map((issue) => {
-        console.log("issue", issue);
-        return <div>{issue.todo}</div>;
-      })}
+      <IssueList issues={issues} onIssueCardClick={()=>handleStatusChange(issueId)}/>
     </div>
   );
-}
-function transformIssue(apiIssue: any) {
-  throw new Error("Function not implemented.");
 }
 
