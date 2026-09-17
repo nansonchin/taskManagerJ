@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Issue, IssueFormData } from "../type/issue";
 
 type IssueFormProps = {
   onCreate: (formData: IssueFormData) => void;
   issueToEdit?:Issue
-
-  
 };
 
-export function IssueForm({ onCreate }: IssueFormProps) {
+export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onCreate(formData);
@@ -30,6 +28,19 @@ export function IssueForm({ onCreate }: IssueFormProps) {
     difficulty: 3,
     dueDate: null,
   }
+
+  useEffect(()=>{
+    if(issueToEdit){
+        setFormData({
+            title:issueToEdit.title,
+            description:issueToEdit.description,
+            assignee:issueToEdit.assignee,
+            difficulty:issueToEdit.difficulty,
+            dueDate:issueToEdit.dueDate
+        })
+    }
+  },[issueToEdit])
+  
   return (
     <form onSubmit={handleSubmit}>
       <div>
