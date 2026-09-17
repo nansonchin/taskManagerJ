@@ -1,10 +1,10 @@
 function getNextStatus(status:string){
-    if(status === "to-do"){
-        return "In progress"
-    }else if(status ==="In progress"){
-        return "done"
+    if(status === "To-do"){
+        return "In-progress"
+    }else if(status ==="In-progress"){
+        return "Done"
     }else{
-        return "to-do"
+        return "To-do"
     }
 }
 
