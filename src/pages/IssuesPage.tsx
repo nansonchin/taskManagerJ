@@ -13,6 +13,7 @@ export default function IssuesPage() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateForm,setIsCreateForm] = useState(false)
+  const [edittingIssueId,setEdittingId] = useState<number |null>()
 
 
   useEffect(() => {
@@ -41,8 +42,21 @@ export default function IssuesPage() {
       status:"To-do"
     }
     setIssues([...issues,newIssue])
+    setIsCreateForm(false)
   }
 
+  const handleEditIssue = (issueId:number)=>{
+    setEdittingId(issueId)
+    console.log("Id",issueId)
+
+    if(issueId){
+      return
+    }
+
+    const issueToEdit = issues.find(
+      (issue)=>issue.id === issueId
+    )
+  }
   
   const handleStatusChange = (issueId:number) =>{
     const issue = issues.find((data)=>data.id === issueId)
@@ -64,8 +78,6 @@ export default function IssuesPage() {
           return data
       })
     )
-
-  
   }
 
   if (isLoading) {
@@ -79,11 +91,11 @@ export default function IssuesPage() {
   return (
     <div>
       <div>
-        <button onClick={()=>setIsCreateForm(true)}>
+        <button onClick={()=>setIsCreateForm((prev)=>!prev)}>
           Create Form
         </button>
         {
-          isCreateForm??
+          isCreateForm &&
          <div>
            <button onClick={()=>setIsCreateForm(false)}>
             Cancel
@@ -92,7 +104,7 @@ export default function IssuesPage() {
           </div>
         }
       </div>
-      <IssueList issues={issues} onIssueCardClick={handleStatusChange}/>
+      <IssueList issues={issues} onIssueCardClick={handleStatusChange} onIssueCardEdit={handleEditIssue}/>
     </div>
   );
 }
