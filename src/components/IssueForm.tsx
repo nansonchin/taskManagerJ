@@ -3,14 +3,14 @@ import type { Issue, IssueFormData } from "../type/issue";
 
 type IssueFormProps = {
   onCreate: (formData: IssueFormData) => void;
-  issueToEdit?:Issue
+  issueToEdit?: Issue;
 };
 
 export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onCreate(formData);
-    setFormData(initialData)
+    setFormData(initialData);
   };
 
   const [formData, setFormData] = useState<IssueFormData>({
@@ -21,26 +21,26 @@ export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
     dueDate: null,
   });
 
-  const initialData :IssueFormData={
-     title: "",
+  const initialData: IssueFormData = {
+    title: "",
     description: "",
     assignee: "",
     difficulty: 3,
     dueDate: null,
-  }
+  };
 
-  useEffect(()=>{
-    if(issueToEdit){
-        setFormData({
-            title:issueToEdit.title,
-            description:issueToEdit.description,
-            assignee:issueToEdit.assignee,
-            difficulty:issueToEdit.difficulty,
-            dueDate:issueToEdit.dueDate
-        })
+  useEffect(() => {
+    if (issueToEdit) {
+      setFormData({
+        title: issueToEdit.title,
+        description: issueToEdit.description,
+        assignee: issueToEdit.assignee,
+        difficulty: issueToEdit.difficulty,
+        dueDate: issueToEdit.dueDate,
+      });
     }
-  },[issueToEdit])
-  
+  }, [issueToEdit]);
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -110,8 +110,11 @@ export function IssueForm({ onCreate, issueToEdit }: IssueFormProps) {
           }}
         />
       </div>
-
-      <button type="submit">Submit</button>
+      {issueToEdit ? (
+        <button>Edit</button>
+      ) : (
+        <button type="submit">Submit</button>
+      )}
     </form>
   );
 }

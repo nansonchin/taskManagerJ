@@ -13,7 +13,7 @@ export default function IssuesPage() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateForm,setIsCreateForm] = useState(false)
-  const [edittingIssueId,setEdittingId] = useState<number |null>()
+  const [edittingIssueId,setEdittingId] = useState<number |null>(null)
 
 
   useEffect(() => {
@@ -49,13 +49,10 @@ export default function IssuesPage() {
     setEdittingId(issueId)
     console.log("Id",issueId)
 
-    if(issueId){
+    if(!issueId){
       return
     }
 
-    const issueToEdit = issues.find(
-      (issue)=>issue.id === issueId
-    )
   }
   
   const handleStatusChange = (issueId:number) =>{
@@ -88,6 +85,7 @@ export default function IssuesPage() {
     return <div>Something went wrong</div>;
   }
 
+    const issueToEdit = edittingIssueId? issues.find((issue)=>issue.id === edittingIssueId):undefined
   return (
     <div>
       <div>
@@ -95,12 +93,12 @@ export default function IssuesPage() {
           Create Form
         </button>
         {
-          isCreateForm &&
+          isCreateForm || edittingIssueId &&
          <div>
            <button onClick={()=>setIsCreateForm(false)}>
             Cancel
           </button>
-          <IssueForm onCreate={handleCreateIssue} />
+          <IssueForm onCreate={handleCreateIssue} issueToEdit={issueToEdit}/>
           </div>
         }
       </div>
