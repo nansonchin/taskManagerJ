@@ -1,9 +1,15 @@
+export type Status = 
+    | "To-do"
+    | "In-progress"
+    | "Done"
+
+
 export type Issue = {
     id:number;
     title:string;
     description:string;
     asisignee:string;
-    status:string;
+    status:Status;
     dueDate:Date;
-    difficulty:Number;
+    difficulty:number;
 }
