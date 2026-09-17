@@ -48,6 +48,9 @@ export default function IssuesPage() {
           return issue;
         })
       )
+      setIsCreateForm(false);
+      setEdittingId(null)
+
     } else {
       const newIssue: Issue = {
         id: Date.now(),
@@ -90,6 +93,11 @@ export default function IssuesPage() {
     );
   };
 
+  const closeForm =() =>{
+    setEdittingId(null)
+      setIsCreateForm(false);
+
+  }
   if (isLoading) {
     return <div>Loading ...</div>;
   }
@@ -107,10 +115,10 @@ export default function IssuesPage() {
         <button onClick={() => setIsCreateForm((prev) => !prev)}>
           Create Form
         </button>
-        {isCreateForm ||
-          edittingIssueId && (
+        {(isCreateForm ||
+          edittingIssueId!==null) && (
             <div>
-              <button onClick={() => setIsCreateForm(false)}>Cancel</button>
+              <button onClick={closeForm}>Cancel</button>
               <IssueForm
                 onSubmit={handleFormSubmit}
                 issueToEdit={issueToEdit}
