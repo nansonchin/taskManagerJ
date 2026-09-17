@@ -10,6 +10,6 @@ export type Issue = {
     description:string;
     asisignee:string;
     status:Status;
-    dueDate:Date;
+    dueDate:Date |null;
     difficulty:number;
 }
