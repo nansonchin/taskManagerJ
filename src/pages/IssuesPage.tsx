@@ -120,19 +120,12 @@ export default function IssuesPage() {
 
   const handleSearch= (e:React.ChangeEvent<HTMLInputElement>)=>{
     setSearchTerm(e.target.value)
-    const searchText = (e.target.value)
-
-    const filteredIssues = issues.filter((issue)=>{
-      if(issue.title.includes(e.target.value)){
-        return issue.title
-      }
-    })
-      setIssues(filteredIssues)
-      if(e.target.value.trim()===""){
-        
-      }
 
   }
+
+  const filteredIssues = issues.filter((issue)=>{
+    issue.title.toLowerCase().includes(searchTerm.toLowerCase())
+  })
   return (
     <div>
       <div>
@@ -160,7 +153,7 @@ export default function IssuesPage() {
           )}
       </div>
       <IssueList
-        issues={issues}
+        issues={filteredIssues}
         onIssueCardClick={handleStatusChange}
         onIssueCardEdit={handleEditIssue}
         onIssueCardDelete={handleDeleteIssue}
