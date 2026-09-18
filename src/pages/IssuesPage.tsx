@@ -110,6 +110,10 @@ export default function IssuesPage() {
     return <div>Something went wrong</div>;
   }
 
+  if(issues.length === 0){
+    return <div>No Issues Yet</div>
+  }
+
   const issueToEdit = edittingIssueId
     ? issues.find((issue) => issue.id === edittingIssueId)
     : undefined;
