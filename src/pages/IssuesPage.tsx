@@ -13,7 +13,7 @@ export default function IssuesPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateForm, setIsCreateForm] = useState(false);
   const [edittingIssueId, setEdittingId] = useState<number | null>(null);
-
+  const [searchTerm, setSearchTerm] = useState("")
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
@@ -120,6 +120,15 @@ export default function IssuesPage() {
   return (
     <div>
       <div>
+        <div>
+          Search:
+          <input
+            value={searchTerm}
+            onChange={(e)=>{
+              setSearchTerm(e.target.value)
+            }}
+          />
+        </div>
         <button onClick={() => setIsCreateForm((prev) => !prev)}>
           Create Form
         </button>
