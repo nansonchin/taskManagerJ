@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Issue, IssueFormData } from "../type/issue";
+import type { FormErrorsMessage, Issue, IssueFormData } from "../type/issue";
 
 type IssueFormProps = {
   onSubmit: (formData: IssueFormData, issueId?: number) => void;
@@ -23,6 +23,12 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
     dueDate: null,
   });
 
+  const [error,setErrors] = useState<FormErrorsMessage>({
+    title:"",
+    description:"",
+    difficulty:""
+  })
+
   const initialData: IssueFormData = {
     title: "",
     description: "",
@@ -42,6 +48,27 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
       });
     }
   }, [issueToEdit]);
+
+  const validateForm= (formData:IssueFormData)=>{
+    const errors:FormErrorsMessage ={}
+
+    if(formData.title.trim()===""){
+      errors.title="Title is required"
+    }
+
+    if(formData.description.trim()===""){
+      errors.description="Description is required"
+    }
+
+    if(!formData.difficulty){
+      errors.difficulty="Difficulty is required"
+    }
+
+    if(formData.difficulty <0 || formData.difficulty >6){
+      errors.difficulty ="Difficulty Number is between 1-5 is acceptable"
+    }
+    return errors
+  }
 
   return (
     <form onSubmit={handleSubmit}>

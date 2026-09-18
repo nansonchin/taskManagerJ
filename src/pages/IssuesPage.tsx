@@ -57,7 +57,7 @@ export default function IssuesPage() {
         ...formData,
         status: "To-do",
       };
-      setIssues([...issues, newIssue]);
+      setIssues(prev=>[...prev, newIssue]);
       setIsCreateForm(false);
     }
   };

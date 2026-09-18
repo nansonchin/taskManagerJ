@@ -28,3 +28,10 @@ export type IssueFormData={
     difficulty:number;
     dueDate:Date | null;
 }
+
+
+export type FormErrorsMessage={
+    title:string;
+    description:string;
+    difficulty:string;
+}
