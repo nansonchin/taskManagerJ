@@ -10,10 +10,10 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const checkErrors=validateForm(formData)
-    if(checkErrors){
+    if(Object.keys(checkErrors).length>0){
       setErrorsMessage((prev)=>({
         ...prev,
-        checkErrors
+        ...checkErrors
       }))
       return
     }
@@ -76,7 +76,7 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
       errors.difficulty="Difficulty is required"
     }
 
-    if(formData.difficulty <0 || formData.difficulty >6){
+    if(formData.difficulty <1 || formData.difficulty >5){
       errors.difficulty ="Difficulty Number is between 1-5 is acceptable"
     }
     return errors
