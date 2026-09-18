@@ -11,10 +11,10 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
     e.preventDefault();
     const checkErrors=validateForm(formData)
     if(checkErrors){
-      setErrors((prev)=>{
+      setErrorsMessage((prev)=>({
         ...prev,
         checkErrors
-      })
+      }))
       return
     }
     onSubmit(formData, issueToEdit?.id);
@@ -31,7 +31,7 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
     dueDate: null,
   });
 
-  const [error,setErrors] = useState<FormErrorsMessage>({
+  const [errorsMessage,setErrorsMessage] = useState<FormErrorsMessage>({
     title:"",
     description:"",
     difficulty:""
@@ -84,6 +84,14 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
+      {
+        errorsMessage&& (<div>
+          {errorsMessage.description}
+          {errorsMessage.title}
+          {errorsMessage.difficulty}
+
+        </div>)
+      }
       <div>
         <div>Title:</div>
 
