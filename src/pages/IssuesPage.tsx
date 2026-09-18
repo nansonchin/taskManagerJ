@@ -37,8 +37,8 @@ export default function IssuesPage() {
 
   const handleFormSubmit = (formData: IssueFormData, issueId?: number) => {
     if (issueId) {
-      setIssues(
-        issues.map((issue)=>{
+      setIssues(prev=>
+        prev.map((issue)=>{
           if(issue.id===issueId){
             return{
               ...issue,
@@ -80,8 +80,8 @@ export default function IssuesPage() {
 
     const nextStatus = getNextStatus(issue.status);
 
-    setIssues(
-      issues.map((data) => {
+    setIssues(prev=>
+      prev.map((data) => {
         if (data.id === issueId) {
           return {
             ...data,
