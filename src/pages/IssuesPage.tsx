@@ -36,6 +36,16 @@ export default function IssuesPage() {
       return;
     }
   };
+  
+  const filteredIssues =useMemo(()=>{
+    return  issues.filter((issue)=>{
+    const matchesSearch = issue.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = statusFilter === "All" || issue.status === statusFilter
+    return matchesStatus && matchesSearch
+  })
+  },[issues,searchTerm,statusFilter])
+
+  console.log("Issue Page Render")
 
   const closeForm =() =>{
     setEdittingId(null)
@@ -63,13 +73,6 @@ export default function IssuesPage() {
 
   }
 
-  const filteredIssues =useMemo(()=>{
-    return  issues.filter((issue)=>{
-    const matchesSearch = issue.title.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === "All" || issue.status === statusFilter
-    return matchesStatus && matchesSearch
-  })
-  },[issues,searchTerm,statusFilter])
   return (
     <div>
       <div>

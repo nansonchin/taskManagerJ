@@ -4,7 +4,7 @@ import fetchIssues from "../api/fetchIssues";
 import { transformIssue } from "../utils/transformIssue";
 import getNextStatus from "../utils/getNextStatus";
 
-export function useIssue{
+export function useIssue(){
     const [ issues,setIssues] = useState<Issue[]>([])
     const [isLoading, setIsLoading]=useState(false);
     const [isError,setIsError]=useState(false)

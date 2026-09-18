@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { Issue } from "../type/issue"
 
 export type IssueCardProps={
@@ -7,7 +8,8 @@ export type IssueCardProps={
       onIssueCardDelete:(issueId:number)=>void;
 }
 
-export function IssueCard({issue,  onIssueCardClick,onIssueCardEdit,onIssueCardDelete}:IssueCardProps){
+export const IssueCard = memo(function IssueCard({issue,  onIssueCardClick,onIssueCardEdit,onIssueCardDelete}:IssueCardProps){
+   console.log("IssueCard Render")
     return(
         <div >
             <div>{issue.title}</div>
@@ -27,4 +29,4 @@ export function IssueCard({issue,  onIssueCardClick,onIssueCardEdit,onIssueCardD
             </button>
         </div>
     )
-}
+})
