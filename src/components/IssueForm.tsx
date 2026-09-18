@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FormErrorsMessage, Issue, IssueFormData } from "../type/issue";
-
+import "./IssueForm.scss"
 type IssueFormProps = {
   onSubmit: (formData: IssueFormData, issueId?: number) => void;
   issueToEdit?: Issue;
@@ -9,13 +9,10 @@ type IssueFormProps = {
 export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const checkErrors=validateForm(formData)
-    if(Object.keys(checkErrors).length>0){
-      setErrorsMessage((prev)=>({
-        ...prev,
-        ...checkErrors
-      }))
-      return
+    const checkErrors = validateForm(formData);
+    if (Object.keys(checkErrors).length > 0) {
+      setErrorsMessage(checkErrors);
+      return;
     }
     onSubmit(formData, issueToEdit?.id);
     if (!issueToEdit) {
@@ -31,11 +28,11 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
     dueDate: null,
   });
 
-  const [errorsMessage,setErrorsMessage] = useState<FormErrorsMessage>({
-    title:"",
-    description:"",
-    difficulty:""
-  })
+  const [errorsMessage, setErrorsMessage] = useState<FormErrorsMessage>({
+    title: "",
+    description: "",
+    difficulty: "",
+  });
 
   const initialData: IssueFormData = {
     title: "",
@@ -57,41 +54,40 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
     }
   }, [issueToEdit]);
 
-  const validateForm= (formData:IssueFormData)=>{
-    const errors:FormErrorsMessage ={
+  const validateForm = (formData: IssueFormData) => {
+    const errors: FormErrorsMessage = {
       title: "",
       description: "",
-      difficulty: ""
+      difficulty: "",
+    };
+
+    if (formData.title.trim() === "") {
+      errors.title = "Title is required";
     }
 
-    if(formData.title.trim()===""){
-      errors.title="Title is required"
+    if (formData.description.trim() === "") {
+      errors.description = "Description is required";
     }
 
-    if(formData.description.trim()===""){
-      errors.description="Description is required"
+    if (!formData.difficulty) {
+      errors.difficulty = "Difficulty is required";
     }
 
-    if(!formData.difficulty){
-      errors.difficulty="Difficulty is required"
+    if (formData.difficulty < 1 || formData.difficulty > 5) {
+      errors.difficulty = "Difficulty Number is between 1-5 is acceptable";
     }
-
-    if(formData.difficulty <1 || formData.difficulty >5){
-      errors.difficulty ="Difficulty Number is between 1-5 is acceptable"
-    }
-    return errors
-  }
+    return errors;
+  };
 
   return (
     <form onSubmit={handleSubmit}>
-      {
-        errorsMessage&& (<div>
+      {errorsMessage && (
+        <div>
           {errorsMessage.description}
           {errorsMessage.title}
           {errorsMessage.difficulty}
-
-        </div>)
-      }
+        </div>
+      )}
       <div>
         <div>Title:</div>
 
@@ -104,6 +100,9 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
             });
           }}
         />
+        {errorsMessage.title && (
+          <div className="errorMessages">{errorsMessage.title}</div>
+        )}
       </div>
 
       <div>
@@ -117,6 +116,9 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
             });
           }}
         />
+        {errorsMessage.description && (
+          <div className="errorMessages">{errorsMessage.description}</div>
+        )}
       </div>
 
       <div>
@@ -145,6 +147,9 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
             });
           }}
         />
+        {errorsMessage.difficulty && (
+          <div className="errorMessages">{errorsMessage.difficulty}</div>
+        )}
       </div>
 
       <div>
@@ -159,10 +164,7 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
           }}
         />
       </div>
-        <button type="submit">{
-            issueToEdit? "Save":"Submit"
-            }</button>
-     
+      <button type="submit">{issueToEdit ? "Save" : "Submit"}</button>
     </form>
   );
 }
