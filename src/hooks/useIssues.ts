@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import type { ApiTodo, Issue, IssueFormData } from "../type/issue";
 import fetchIssues from "../api/fetchIssues";
 import { transformIssue } from "../utils/transformIssue";
@@ -59,7 +59,7 @@ export function useIssue(){
       )
     }
 
-    const changeIssueStatus = (issueId:number)=>{
+    const changeIssueStatus = useCallback((issueId:number)=>{
         const issue = issues.find((data)=>data.id === issueId);
 
         if(!issue){
@@ -79,13 +79,13 @@ export function useIssue(){
                 return data;
             })
         )
-    }
+    },[])
 
-    const deleteIssue = (issueId:number)=>{
+    const deleteIssue = useCallback((issueId:number)=>{
         setIssues((prev)=>
             prev.filter((issue)=> issue.id!==issueId)
         )
-    }
+    },[])
 
     return{
         issues,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import fetchIssues from "../api/fetchIssues";
 import getNextStatus from "../utils/getNextStatus";
 import type { ApiTodo, Issue, IssueFormData } from "../type/issue";
@@ -28,14 +28,14 @@ export default function IssuesPage() {
     }
   };
 
-  const handleEditIssue = (issueId: number) => {
+  const handleEditIssue = useCallback((issueId: number) => {
     setEdittingId(issueId);
     console.log("Id", issueId);
 
     if (!issueId) {
       return;
     }
-  };
+  },[])
   
   const filteredIssues =useMemo(()=>{
     return  issues.filter((issue)=>{
