@@ -124,7 +124,7 @@ export default function IssuesPage() {
   }
 
   const filteredIssues = issues.filter((issue)=>{
-    issue.title.toLowerCase().includes(searchTerm.toLowerCase())
+    return issue.title.toLowerCase().includes(searchTerm.toLowerCase())
   })
   return (
     <div>
