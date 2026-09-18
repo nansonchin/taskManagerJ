@@ -9,6 +9,14 @@ type IssueFormProps = {
 export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const checkErrors=validateForm(formData)
+    if(checkErrors){
+      setErrors((prev)=>{
+        ...prev,
+        checkErrors
+      })
+      return
+    }
     onSubmit(formData, issueToEdit?.id);
     if (!issueToEdit) {
       setFormData(initialData);
@@ -50,7 +58,11 @@ export function IssueForm({ onSubmit, issueToEdit }: IssueFormProps) {
   }, [issueToEdit]);
 
   const validateForm= (formData:IssueFormData)=>{
-    const errors:FormErrorsMessage ={}
+    const errors:FormErrorsMessage ={
+      title: "",
+      description: "",
+      difficulty: ""
+    }
 
     if(formData.title.trim()===""){
       errors.title="Title is required"
