@@ -1,63 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import fetchIssues from "../api/fetchIssues";
 import getNextStatus from "../utils/getNextStatus";
 import type { ApiTodo, Issue, IssueFormData } from "../type/issue";
 import { transformIssue } from "../utils/transformIssue";
 import IssueList from "../components/IssueList";
 import { IssueForm } from "../components/IssueForm";
+import { useIssue } from "../hooks/useIssues";
 
 export default function IssuesPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [issues, setIssues] = useState<Issue[]>([]);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const {issues,isLoading,isError,errorMessage, createIssue, updateIssue, changeIssueStatus, deleteIssue} = useIssue()
+
   const [isCreateForm, setIsCreateForm] = useState(false);
   const [edittingIssueId, setEdittingId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("")
-  useEffect(() => {
-    setIsLoading(true);
-    setIsError(false);
-    const loadIssues = async () => {
-      try {
-        const result = await fetchIssues();
-        console.log(result.todos);
-        setIssues(
-          result.todos.map((apiIssue: ApiTodo) => transformIssue(apiIssue)),
-        );
-        setIsLoading(false);
-      } catch (error: any) {
-        setIsError(true);
-        setIsLoading(false);
-        setErrorMessage(error.message);
-      }
-    };
-
-    loadIssues();
-  }, []);
-
+  const [statusFilter,setStatusFilter] = useState("All")
+  
   const handleFormSubmit = (formData: IssueFormData, issueId?: number) => {
     if (issueId) {
-      setIssues(prev=>
-        prev.map((issue)=>{
-          if(issue.id===issueId){
-            return{
-              ...issue,
-              ...formData
-            }
-          }
-          return issue;
-        })
-      )
+      updateIssue(issueId,formData)
       setIsCreateForm(false);
       setEdittingId(null)
 
     } else {
-      const newIssue: Issue = {
-        id: Date.now(),
-        ...formData,
-        status: "To-do",
-      };
-      setIssues(prev=>[...prev, newIssue]);
+     createIssue(formData)
       setIsCreateForm(false);
     }
   };
@@ -70,32 +36,6 @@ export default function IssuesPage() {
       return;
     }
   };
-
-  const handleStatusChange = (issueId: number) => {
-    const issue = issues.find((data) => data.id === issueId);
-
-    if (!issue) {
-      return;
-    }
-
-    const nextStatus = getNextStatus(issue.status);
-
-    setIssues(prev=>
-      prev.map((data) => {
-        if (data.id === issueId) {
-          return {
-            ...data,
-            status: nextStatus,
-          };
-        }
-        return data;
-      }),
-    );
-  };
-
-  const handleDeleteIssue=(issueId:number)=>{
-    setIssues((prev)=> prev.filter(((item)=>item.id!==issueId)))
-  }
 
   const closeForm =() =>{
     setEdittingId(null)
@@ -123,9 +63,13 @@ export default function IssuesPage() {
 
   }
 
-  const filteredIssues = issues.filter((issue)=>{
-    return issue.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredIssues =useMemo(()=>{
+    return  issues.filter((issue)=>{
+    const matchesSearch = issue.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = statusFilter === "All" || issue.status === statusFilter
+    return matchesStatus && matchesSearch
   })
+  },[issues,searchTerm,statusFilter])
   return (
     <div>
       <div>
@@ -137,6 +81,14 @@ export default function IssuesPage() {
               handleSearch(e)
             }}
           />
+        </div>
+        <div>
+          <select value={statusFilter} onChange={(e)=>setStatusFilter(e.target.value)}>
+            <option value="All">All</option>
+            <option value ="To-do">To-do</option>
+            <option value= "Doing">Doing</option>
+            <option value ="Done">Done</option>
+          </select>
         </div>
         <button onClick={() => setIsCreateForm((prev) => !prev)}>
           Create Form
@@ -154,9 +106,9 @@ export default function IssuesPage() {
       </div>
       <IssueList
         issues={filteredIssues}
-        onIssueCardClick={handleStatusChange}
+        onIssueCardClick={changeIssueStatus}
         onIssueCardEdit={handleEditIssue}
-        onIssueCardDelete={handleDeleteIssue}
+        onIssueCardDelete={deleteIssue}
       />
     </div>
   );
