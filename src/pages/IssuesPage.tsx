@@ -117,6 +117,22 @@ export default function IssuesPage() {
   const issueToEdit = edittingIssueId
     ? issues.find((issue) => issue.id === edittingIssueId)
     : undefined;
+
+  const handleSearch= (e:React.ChangeEvent<HTMLInputElement>)=>{
+    setSearchTerm(e.target.value)
+    const searchText = (e.target.value)
+
+    const filteredIssues = issues.filter((issue)=>{
+      if(issue.title.includes(e.target.value)){
+        return issue.title
+      }
+    })
+      setIssues(filteredIssues)
+      if(e.target.value.trim()===""){
+        
+      }
+
+  }
   return (
     <div>
       <div>
@@ -125,7 +141,7 @@ export default function IssuesPage() {
           <input
             value={searchTerm}
             onChange={(e)=>{
-              setSearchTerm(e.target.value)
+              handleSearch(e)
             }}
           />
         </div>
